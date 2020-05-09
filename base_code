@@ -6,36 +6,68 @@ funds = int(0)
 area = str("")
 inf_peop = 0
 event = str("")
-time = 300
+
+ori_time = 480                  #minutes
+timer = 0                       #minutes
+
 
 #tracks which area you have visited
-visA1 = int(0) #area 1
-visA2 = int(0) #area 2
-visA3 = int(0) #area 3
-visA4 = int(0) #area 4
-visA5 = int(0) #area 5
-visA6 = int(0) #area 6
+visA1 = int(0)                  #area 1
+visA2 = int(0)                  #area 2
+visA3 = int(0)                  #area 3
+visA4 = int(0)                  #area 4
+visA5 = int(0)                  #area 5
+visA6 = int(0)                  #area 6
 
+
+
+
+def buy():
+    
+    
+
+def displayTime(ori_time, timer):
+    time_dis = ori_time + timer              #minutes
+    hours = time_dis // 60
+    minutes = time_dis % 60
+    print("The time now is ", hours, ":", str(minutes).zfill(2))
+    ori_time = time_dis
+    
 
 def spaces(number):
     for i in range(0, number):
         print("\n")
         
 
-def decrementTime():
-    time -= 1
+def incrementTimer():
+    timer += 1
 
 
 def infection(inf_peop):
     print("Infection is everywhere")
-    if(inf_peop < 5):
-        infection = random.randint(0, 256)
+    if(ori_time < 720):
+        few = 256
+        medium = 128
+        many = 64
 
-    elif(inf_peop < 9 and inf_peop >= 5):
-        infection = random.randint(0, 200)
+    elif(ori_time >= 720 and ori_time < 1080):
+        few = 128
+        medium = 64
+        many = 32
 
     else:
-        infection = random.randint(0, 150)
+        few = 512
+        medium = 256
+        many = 128
+    
+    if(inf_peop < 5):
+        infection = random.randint(0, few)
+
+    elif(inf_peop < 9 and inf_peop >= 5):
+        infection = random.randint(0, medium)
+
+    else:
+        infection = random.randint(0, many)
 
     
     if(infection == 0):
@@ -52,11 +84,32 @@ def gameOver():
     sys.exit(0)
         
 
+def itemGone():
+    if(visA1 == 1):
+        print("These items are gone from area 2")
+    
+
+
 def mainHub():
     while(True):
+        choice = 0
+        displayTime(ori_time, timer)
         print("You are in the main hub of the mall")
         spaces(1)
-        print("Choose where do you wish to go: ")
+        print("1: Area 1")
+        print("2: Area 2")
+        print("3: Area 3")
+        print("4: Area 4")
+        print("5: Area 5")
+        print("6: Area 6")
+        
+        try:
+            choice = int(input("Choose where do you wish to go: "))
+        
+        except:
+            print("A")
+        
+            
         '''
         insert choices of area here
         don't forget to check visit variables
@@ -105,17 +158,14 @@ def area2():
         print("Story text 2")
 
 
-def area3():
 
 
-def area4():
 
 
-def area5():
 
+  
 
-def area6():
     
 
-infection()
+mainHub()
         
