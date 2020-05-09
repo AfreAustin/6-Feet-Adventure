@@ -11,7 +11,7 @@ def main():
     root.geometry("800x600")
     
     app = Window(root)
-    app.configure(bg = '#beb5b5')
+    app.configure(bg = '#898282')
     
     root.mainloop()
 
@@ -51,9 +51,9 @@ class Window(Frame):
     def init_labels(self):
         
         # Title
-        title = Label(self, bg = 'white',
+        title = Label(self, bg = '#beb5b5',
                       text = "6 Feet Adventure",
-                      relief = RAISED)
+                      relief = GROOVE)
         title.config( font = ('CopperplateGothicLight', '25', 'bold') )
         title.place(relx = 0.30, rely = 0.01)
 
@@ -61,10 +61,10 @@ class Window(Frame):
         exitButton = Button(self, bg = '#f44040', fg = 'black',
                             text = " EXIT ", 
                             command = self.master.destroy )
-        exitButton.place(relx = 0.90, rely = 0.015)
+        exitButton.place(relx = 0.81, rely = 0.015)
         
         # Credits
-        credits = Label(self, bg = '#beb5b5',
+        credits = Label(self, bg = '#898282',
                         text = ("_" * 153) + 
                                 "\n created by AfreAustin and JoSky21")
         credits.place(relx = 0.015, rely = 0.90)
@@ -73,8 +73,8 @@ class Window(Frame):
     def init_events(self):
 
         events = Label(self, bg = 'white',
-                       text = "EVENTS",
-                       height = 30, width = 70)
+                       text = "EVENT IMAGE",
+                       height = 30, width = 70, relief = RIDGE)
         events.place(relx = 0.05, rely = 0.10)
     
     # inventory window
@@ -95,19 +95,22 @@ class Window(Frame):
                                "\n" + str(item7) + " Paper Towel Rolls "
                                "\n" + str(item8) + " Medicine "
                                "\n" + str(item9) + " Games ",
-                        height = 15, width = 30)
+                        height = 15, width = 30, relief = RAISED )
         InventL.place(relx = 0.70, rely = 0.10)
 
     # stats window
     def init_Cstats(self):
 
-        monies = 100;
+        monies = 100
+        people = "A Shit Ton"
+        chance = "Fucked"
 
         statsL = Label(self, bg = '#3f423f', fg = '#06f706',
-                       text = "Monies: +" + str(monies) + "\n"+
-                              "\n Current People: A Shit Ton" +
-                              "\n Chance of Infection: Fucked ", 
-                       height = 8, width = 30)
+                       text = "Monies: +" + str(monies) +
+                              "\n\n Current People: " + people +
+                              "\n Infection Chance: " + chance,
+                       height = 8, width = 30, 
+                       relief = SUNKEN, justify = CENTER)
         statsL.place(relx = 0.70, rely = 0.60)
 
 main()
