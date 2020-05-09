@@ -29,6 +29,7 @@ class Window(Frame):
         self.init_labels()
         self.init_events()
         self.init_invent()
+        self.init_Cstats()
         
     # window frame
     def init_window(self):
@@ -87,5 +88,13 @@ class Window(Frame):
                         height = 15, width = 30)
         InventL.place(relx = 0.70, rely = 0.10)
 
+    # stats window
+    def init_Cstats(self):
+
+        statsL = Label(self, bg = '#3f423f', fg = '#06f706',
+                       text = " Current People: A Shit Ton" +
+                              "\n Chance of Infection: Fucked ", 
+                       height = 8, width = 30)
+        statsL.place(relx = 0.70, rely = 0.60)
 
 main()
