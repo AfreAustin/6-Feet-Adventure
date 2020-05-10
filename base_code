@@ -113,7 +113,7 @@ def mainHub():
         choice = 0
         displayTime(ori_time, timer)
         displayFund(funds)
-        print("You are in the main hub of the mall")
+        print("You are in the main hub")
         spaces(1)
         print("1: Area 1")
         print("2: Area 2")
@@ -131,6 +131,19 @@ def mainHub():
         else:
             if(choice == 1):
                 area1()
+            elif(choice == 2):
+                area2()
+            elif(choice == 3):
+                area3()
+            elif(choice == 4):
+                area4()
+            elif(choice == 5):
+                area5()
+            elif(choice == 6):
+                area6()
+            else:
+                continue
+                
         
             
         '''
@@ -148,6 +161,7 @@ def mainHub():
 
 
 def area1():
+    spaces(2)
     global visA1, choice, timer, cart, funds
     choice = 0
     items = ["bread", "chips", "beer", "soda", "magazines", "canned food"]
@@ -156,7 +170,7 @@ def area1():
     print("You are at the Corner Store.")
     print("There doesn't seemed to be many people around")
     print("Let's hope they have what I need here.")
-    timer += 50
+    timer += 30
     cart.clear()
 
     if(ori_time < 720):
@@ -166,7 +180,10 @@ def area1():
 
     else:
         people = 2
+
+    spaces(1)
     infection(people) #checks infection
+    spaces(1)
     event = random.randint(0, 2)
     choice = 0
     while(True): #direction
@@ -215,6 +232,7 @@ def area1():
                                     putToCart(items[0])
                                     number[0] -= amount
                                     amountBought.append(amount)
+                                    incrementTimer()
                                     choice = 0
                                     break
                                 
@@ -232,6 +250,7 @@ def area1():
                                     putToCart(items[1])
                                     number[5] -= amount
                                     amountBought.append(amount)
+                                    incrementTimer()
                                     choice = 0
                                     break
                                 
@@ -250,6 +269,7 @@ def area1():
                                     putToCart(items[5])
                                     number[5] -= amount
                                     amountBought.append(amount)
+                                    incrementTimer()
                                     choice = 0
                                     break
                 
@@ -300,6 +320,8 @@ def area1():
                                     putToCart(items[2])
                                     number[5] -= amount
                                     amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
                                     break
 
                         if(choice == 2):
@@ -315,6 +337,8 @@ def area1():
                                     putToCart(items[3])
                                     number[5] -= amount
                                     amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
                                     break
                     
                         try:
@@ -361,6 +385,8 @@ def area1():
                                     putToCart(items[4])
                                     number[5] -= amount
                                     amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
                                     break
 
                             try:
@@ -423,7 +449,7 @@ def area1():
     print("You found all the stuffs you need.")
     print("Time to go to the other areas.")
     visA1 = 1
-    timer += 50
+    timer += 30
     spaces(2)
     return
     
@@ -431,17 +457,226 @@ def area1():
     
 
 
-def area2():
-    global visA2, choice
+def area2(): #Gas Station
+    spaces(2)
+    global visA2, choice, timer, cart, funds
     choice = 0
+    items = ['burger', 'soda', 'chips', 'hotdog', 'magazine', 'canned food', 'gas' ]
 
-    if(visit == 0):
+    print("You are at the gas station.")
+    print("There're a decent amount of people here")
+    
+    timer += 30
+    cart.clear()
+
+    if(ori_time < 720):
+        people = 6
+    elif(ori_time < 900):
+        people = 10
+
+    else:
+        people = 5
+    infection(people) #checks infection
+    event = random.randint(0, 2)
+    choice = 0
+    while(True): #direction
+        print("You got out of your car, there are 3 ways to go.")
+        spaces(1)
+        print("1: Get gas")
+        print("2: Go into the store")
+        print("3: Get back to the car and booking it")
         spaces(2)
-        print("Story text 1")
-        spaces(6)
-        print("Story text 2")
+        try:
+            choice = int(input("Where do you want to go? \n"))
+        except TypeError:
+            print("Put in a number.")
+
+        else:
+            if(choice == 1):
+                choice = 0
+                print("Do I need to get gas right now?")
+                
+                spaces(2)
+                while(True): #Get gas or not
+                    print("1: Yes")
+                    print("2: No")
+
+                    try:
+                        choice = int(input("What're your decision? \n"))
+                    except TypeError:
+                        print("Put in a number.")
+
+                    except ValueError:
+                        print("Put in a number.")
+
+                    else:
+                        if(choice == 1):
+                            print("Let's fill up.")
+                            funds -= 20
+                            timer += 20
+                            break
+                                
+
+                        if(choice == 2):
+                            print("I don't need to fill up right now.")
+                            timer += 5
+                            break
+                      
+                
+                    spaces(2)
+                        
+    
+            if(choice == 2):
+                choice = 0
+                print("You entered the store.")
+                print("They have: ")
+                for i in range(len(items) - 1):
+                    print(items[i])
+                
+                
+
+                while(True):
+                    print("1: ", items[0])
+                    print("2: ", items[1])
+                    print("3: ", items[2])
+                    print("4: ", items[3])
+                    print("5: ", items[4])
+                    print("6: ", items[5])
+                    
+
+                    try:
+                        choice = int(input("What do you want to buy? \n"))
+                    except TypeError:
+                        print("Put in a number.")
+
+                    else:
+                        if(choice == 1):
+                            print("That would be 3.00 please.")
+                            funds -= 3.00
+
+                        elif(choice == 2):
+                            print("That would be 2.00 please.")
+                            funds -= 2.00
+
+                        elif(choice == 3):
+                            print("That would be 1.50 please.")
+                            funds -= 1.50
+
+                        elif(choice == 4):
+                            print("That would be 2.50 please.")
+                            funds -= 2.50
+
+                        elif(choice == 5):
+                            print("That would be 3.00 please.")
+                            funds -= 3.00
+
+                        elif(choice == 6):
+                            print("That is our last canned food.")
+                            print("We will charge you extra for that, 6.00.")
+                            funds -= 6.00
+                        else:
+                            continue
+                    
+                        try:
+                            decision = input("Buying anymore item? (type n to leave)")
+                                    
+                        except:
+                            print("Error")     
+                        else:
+                            if(decision == 'n'):
+                                incrementTimer()
+                                break
+                            else:
+                                continue
+
+            
+
+            if(choice == 3):
+                timer += 30
+                visA2 = 1
+                spaces(2)
+                return
 
 
+            
+
+
+def area3():
+    spaces(2)
+    global visA3, choice, timer, cart, funds
+    choice = 0
+    items = ['burger', 'soda', 'chips', 'hotdog', 'magazine', 'canned food', 'gas' ]
+    
+    amountBought = []
+    print("You are at the drug store.")
+    print("There are many people buying medicines here. I must be quick")
+    
+    timer += 20
+    cart.clear()
+
+    if(ori_time < 720):
+        people = 8
+    elif(ori_time < 900):
+        people = 12
+
+    else:
+        people = 7
+    infection(people) #checks infection
+    event = random.randint(0, 2)
+    while(True): #direction
+        print("You got to the front counter.")
+        spaces(1)
+        print("1: Masks")
+        print("2: Medicine")
+        print("3: Rubbing Alcohol")
+        print("4: Leave")
+        spaces(2)
+        try:
+            choice = int(input("What do I want to buy? \n"))
+        except TypeError:
+            print("Put in a number.")
+
+        else:
+            if(choice == 1):
+                choice = 0
+                print("Masks are rare, it will be pricey.")
+                try:
+                    choice = input("The price will be 10.00 each. Do you still want to buy? (type n for no)")
+                except:
+                    print("Error")
+                else:
+                    if(choice == 'n'):
+                        continue
+                    else:
+                        funds -= 10.00
+                        timer += 15
+
+            elif(choice == 2):
+                choice = 0
+                try:
+                    choice = int(input("How many do you want?"))
+                except ValueError:
+                    print("Put in a number.")
+                except TypeError:
+                    print("Put in a number.")
+                else:
+                    price = choice * 9.50
+                    funds -= price
+                    incrementTimer()
+
+            elif(choice == 3):
+                print("Sorry, we are out of rubbing alcohol.")
+
+            elif(choice == 4):
+                print("Time to go.")
+                timer += 20
+                spaces(2)
+                return
+                    
+
+
+
+    
 
 
 
