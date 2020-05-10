@@ -45,7 +45,7 @@ def putToCart(item):
     
 
 def displayFund(fund):
-    if(fund == 0):
+    if(fund <= 0):
         print("You have no money.")
         print("You poor soul.")
         sys.exit()
