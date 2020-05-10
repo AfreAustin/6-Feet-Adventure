@@ -1,9 +1,10 @@
 import random
 import sys
+from collections import OrderedDict
 
-shoppingList = {'bread': 2, 'fruit_bag': 1, 'can': 6, 'meat': 8, 'water': 1, 'tp': 8, 'clean': 2, 'paperTowel': 4, 'medicine': 3, 'games': 2} 
+shoppingList = {'bread': 2, 'can': 6, 'clean': 2, 'fruit_bag': 1, 'games': 2, 'meat': 8, 'medicine': 3, 'paperTowel': 4, 'tp': 8, 'water': 1 } 
 cart = []
-reqItems = []
+reqItems = {}
 funds = int(100)
 area = str("")
 inf_peop = 0
@@ -22,9 +23,20 @@ visA5 = int(0)                  #area 5
 visA6 = int(0)                  #area 6
 
 
+def Ending():
+    print("Your game is over.")
+    print("Conglaturations on surviving this long.")
+    sys.exit()
 
+def checkMoney(price):
+    global funds
+    if(funds < price):
+        print("I don't have enough money.")
+        print("I am poor.")
 
-
+    else:
+        funds -= price
+        
 
 def putToCart(item):
     cart.append(item)
@@ -40,8 +52,16 @@ def displayTime(ori_time, timer):
     time_dis = ori_time + timer              #minutes
     hours = time_dis // 60
     minutes = time_dis % 60
+
+    if(time_dis >= 1200):
+        print("The time is up..")
+        Ending()
+    if(time_dis > 1080 and ori_time < 1200):
+        print("Time is running out. Gotta speed up!")
+    
     print("The time now is ", hours, ":", str(minutes).zfill(2))
     ori_time = time_dis
+    
     
 
 def spaces(number):
@@ -75,16 +95,16 @@ def infection(inf_peop):
         extreme = 64
     
     if(inf_peop <= 5):
-        infection = random.randint(0, few)
+        infection = random.randint(0, 15)
 
     elif(inf_peop <= 9 and inf_peop > 5):
-        infection = random.randint(0, medium)
+        infection = random.randint(0, 8)
 
     elif(inf_peop <= 13 and inf_peop > 9):
-        infection = random.randint(0, many)
+        infection = random.randint(0, 5)
 
     else:
-        infection = random.randint(0, extreme)
+        infection = random.randint(0, 3)
 
     
     if(infection == 0):
@@ -106,9 +126,28 @@ def itemGone():
         print("These items are gone from area 2")
     
 
+def checkShoppingList():
+    global shoppingList, reqItems
+    req1 = OrderedDict(sorted(reqItems.items()))
+    if(shoppingList == req1):
+        print("You have bought all of the items!")
+        print("The game is over now.")
+        sys.exit()
+
+
+def displayShoppingList():
+    global shoppingList
+    print(shoppingList)
+
+
+
+def displayReqItems():
+    global reqItems
+    print(reqItems)
 
 def mainHub():
     while(True):
+        checkShoppingList()
         spaces(2)
         choice = 0
         displayTime(ori_time, timer)
@@ -162,7 +201,7 @@ def mainHub():
 
 def area1():
     spaces(2)
-    global visA1, choice, timer, cart, funds
+    global visA1, choice, timer, cart, funds, reqItems
     choice = 0
     items = ["bread", "chips", "beer", "soda", "magazines", "canned food"]
     number = [3, 2, 4, 8, 7, 2]
@@ -438,9 +477,9 @@ def area1():
                             price = amountBought[i] * chipsPrice
                             totalPrice += price
 
-                    funds -= totalPrice
-                    
+                    checkMoney(totalPrice)
                     break
+                    
                     
                 
     #some events happen that take away more time
@@ -448,6 +487,10 @@ def area1():
     
     print("You found all the stuffs you need.")
     print("Time to go to the other areas.")
+
+    for i in range(len(cart)):
+        reqItems[cart[i]] = amountBought[i]
+    
     visA1 = 1
     timer += 30
     spaces(2)
@@ -466,7 +509,7 @@ def area2(): #Gas Station
     print("You are at the gas station.")
     print("There're a decent amount of people here")
     
-    timer += 30
+    timer += 700
     cart.clear()
 
     if(ori_time < 720):
@@ -512,7 +555,7 @@ def area2(): #Gas Station
                     else:
                         if(choice == 1):
                             print("Let's fill up.")
-                            funds -= 20
+                            checkMoney(20.00)
                             timer += 20
                             break
                                 
@@ -552,28 +595,30 @@ def area2(): #Gas Station
                     else:
                         if(choice == 1):
                             print("That would be 3.00 please.")
-                            funds -= 3.00
+                            checkMoney(3.00)
+                            
 
                         elif(choice == 2):
                             print("That would be 2.00 please.")
-                            funds -= 2.00
+                            checkMoney(2.00)
+                            
 
                         elif(choice == 3):
                             print("That would be 1.50 please.")
-                            funds -= 1.50
+                            checkMoney(1.50)
 
                         elif(choice == 4):
                             print("That would be 2.50 please.")
-                            funds -= 2.50
+                            checkMoney(2.50)
 
                         elif(choice == 5):
                             print("That would be 3.00 please.")
-                            funds -= 3.00
+                            checkMoney(3.00)
 
                         elif(choice == 6):
                             print("That is our last canned food.")
                             print("We will charge you extra for that, 6.00.")
-                            funds -= 6.00
+                            checkMoney(6.00)
                         else:
                             continue
                     
@@ -648,7 +693,7 @@ def area3():
                     if(choice == 'n'):
                         continue
                     else:
-                        funds -= 10.00
+                        checkMoney(10.00)
                         timer += 15
 
             elif(choice == 2):
@@ -660,8 +705,9 @@ def area3():
                 except TypeError:
                     print("Put in a number.")
                 else:
-                    price = choice * 9.50
-                    funds -= price
+                    price = choice * 6.50
+                    checkMoney(price)
+                    reqItems['medicine'] = choice
                     incrementTimer()
 
             elif(choice == 3):
@@ -669,6 +715,7 @@ def area3():
 
             elif(choice == 4):
                 print("Time to go.")
+                
                 timer += 20
                 spaces(2)
                 return
@@ -676,8 +723,406 @@ def area3():
 
 
 
-    
+   
+def area4():
+    spaces(2)
+    global visA1, choice, timer, cart, funds
+    choice = 0
+    items = ["can", "fruit_bag", "meat", "water", "tp", "clean", "paperTowel", "detergent", "games", "laptop"]
+    number = [15, 7, 20, 5, 30, 10, 15, 6,  9, 7]
+    amountBought = []
+    print("You are at the Supermarket.")
+    print("There is a ridiculous amount of people here")
+    print("Let's hurry up and get what we need and skedaddle out of here.")
+    timer += 10
+    cart.clear()
 
+    if(ori_time < 720):
+        people = 15
+    elif(ori_time < 900):
+        people = 25
+
+    else:
+        people = 15
+
+    spaces(1)
+    infection(people) #checks infection
+    spaces(1)
+    event = random.randint(0, 2)
+    choice = 0
+    while(True): #direction
+        print("You just passed the front door, there are 3 ways to go.")
+        spaces(1)
+        print("1: Left")
+        print("2: Straight")
+        print("3: Right")
+        print("4: Leave")
+        spaces(2)
+        try:
+            choice = int(input("Where do you want to go? \n"))
+        except TypeError:
+            print("Put in a number.")
+
+        else:
+            if(choice == 1):
+                choice = 0
+                print("You got into the food aisle.")
+                print("They have: ")
+                print(number[0], items[0])
+                print(number[1], items[1])
+                print(number[2], items[2])
+                print(number[3], items[3])
+                spaces(2)
+                while(True): #items sold on this aisle
+                    print("1: canned food")
+                    print("2: fruit bag")
+                    print("3: meat")
+                    print("4: water")
+
+                    try:
+                        choice = int(input("What do you want to buy? \n"))
+                    except TypeError:
+                        print("Put in a number.")
+
+                    else:
+                        if(choice == 1):
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[0]):
+                                    print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[0])
+                                    number[0] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+                                
+
+                        if(choice == 2):
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[1]):
+                                    print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[1])
+                                    number[5] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+                                
+
+                        if(choice == 3):
+                            
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[2]):
+                                    print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[2])
+                                    number[2] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+
+                        if(choice == 4):
+                            
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[3]):
+                                    print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[3])
+                                    number[3] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+                        spaces(2)
+                        
+                        try: #ask if you want to buy more
+                            decision = input("Buying anymore item? (type n to leave)")
+                                    
+                        except:
+                             print("Error")       
+                        else:
+                            if(decision == 'n'):
+                                incrementTimer()
+                                break
+                            else:
+                                incrementTimer()
+                                continue
+    #
+    
+            if(choice == 2):
+                choice = 0
+                print("You got into the cleaning aisle.")
+                print("They have: ")
+                print(number[4], items[4])
+                print(number[5], items[5])
+                print(number[6], items[6])
+                print(number[7], items[7])
+                spaces(1)
+                
+
+                while(True):
+                    print("1: Toilet Paper")
+                    print("2: Cleaning Solution")
+                    print("3: Paper Towel")
+                    print("4: Detergent")
+                    
+
+                    try:
+                        choice = int(input("What do you want to buy? \n"))
+                    except TypeError:
+                        print("Put in a number.")
+
+                    else:
+                        if(choice == 1):
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[4]):
+                                    print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[4])
+                                    number[4] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+
+                        if(choice == 2):
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[5]):
+                                        print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[5])
+                                    number[5] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+
+                        if(choice == 3):
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[6]):
+                                        print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[6])
+                                    number[6] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+
+                        if(choice == 4):
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[7]):
+                                        print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[7])
+                                    number[7] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+                    
+                        try:
+                            decision = input("Buying anymore item? (type n to leave)")
+                                    
+                        except:
+                            print("Error")     
+                        else:
+                            if(decision == 'n'):
+                                incrementTimer()
+                                break
+                            else:
+                                incrementTimer()
+                                continue
+
+            
+
+            if(choice == 3):
+                choice = 0
+                print("You got into the Electronic aisle.")
+                print("They have: ")
+                print(number[8], items[8])
+                print(number[9], items[9])
+                
+                
+
+                while(True):
+                    print("1: Games")
+                    print("2: Laptops")
+
+                    try:
+                        choice = int(input("What do you want to buy? \n"))
+                    except TypeError:
+                        print("Put in a number.")
+
+                    else:
+                        if(choice == 1):
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[8]):
+                                    print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[8])
+                                    number[8] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+
+                        if(choice == 2):
+                            try:
+                                amount = int(input("How many do you want?"))
+                            except TypeError:
+                                print("Put in a number.")
+                            else:
+                                if(amount > number[9]):
+                                    print("There is not enough items")
+
+                                else:    
+                                    putToCart(items[9])
+                                    number[9] -= amount
+                                    amountBought.append(amount)
+                                    incrementTimer()
+                                    choice = 0
+                                    break
+
+                            try:
+                                decision = input("Buying anymore item? (type n to leave)")
+                                    
+                            except:
+                                print("Error")     
+                            else:
+                                if(decision == 'n'):
+                                    incrementTimer()
+                                    break
+                                else:
+                                    incrementTimer()
+                                    continue
+
+
+            if(choice == 4):
+                if(not cart): #cart is empty
+                    break
+
+                else:
+                    canPrice = 2.00
+                    fruitPrice = 3.00
+                    meatPrice = 3.25
+                    waterPrice = 0.80
+                    toiletPrice = 0.90
+                    cleanPrice = 3.50
+                    paperPrice = 2.00
+                    detergentPrice = 7.00
+                    gamePrice = 3.00
+                    laptopPrice = 35.00
+                    
+                    totalPrice = 0
+                    for i in range(0, len(cart)):
+                        if(cart[i] == 'can'):
+                            price = amountBought[i] * canPrice
+                            totalPrice += price
+                        elif(cart[i] == 'fruit_bag'):
+                            price = amountBought[i] * fruitPrice
+                            totalPrice += price
+                        
+                        elif(cart[i] == 'meat'):
+                            price = amountBought[i] * meatPrice
+                            totalPrice += price
+
+                        elif(cart[i] == 'water'):
+                            price = amountBought[i] * waterPrice
+                            totalPrice += price
+
+                        elif (cart[i] == 'tp'):
+                            price = amountBought[i] * toiletPrice
+                            totalPrice += price
+                            
+                        elif(cart[i] == 'clean'):
+                            price = amountBought[i] * cleanPrice
+                            totalPrice += price
+
+                        elif(cart[i] == 'paperTowel'):
+                            price = amountBought[i] * paperPrice
+                            totalPrice += price
+
+                        elif(cart[i] == 'detergent'):
+                            price = amountBought[i] * detergentPrice
+                            totalPrice += price
+
+                        elif(cart[i] == 'games'):
+                            price = amountBought[i] * gamePrice
+                            totalPrice += price
+                            
+                        else:
+                            price = amountBought[i] * laptopPrice
+                            totalPrice += price
+
+                    checkMoney(totalPrice)
+                    timer += 40
+                    break
+                    
+                    
+                
+    #some events happen that take away more time
+    #repeat how many times
+    
+    print("You found all the stuffs you need.")
+    print("Time to go to the other areas.")
+
+    for i in range(len(cart)):
+        reqItems[cart[i]] = amountBought[i]
+        
+    visA4 = 1
+    timer += 10
+    spaces(2)
+    return
+    
 
 
 
