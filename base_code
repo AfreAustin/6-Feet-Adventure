@@ -157,12 +157,10 @@ def mainHub():
         displayFund(funds)
         print("You are in the main hub")
         spaces(1)
-        print("1: Area 1")
-        print("2: Area 2")
-        print("3: Area 3")
-        print("4: Area 4")
-        print("5: Area 5")
-        print("6: Area 6")
+        print("1: Corner Store")
+        print("2: Gas Station")
+        print("3: Drug Store")
+        print("4: Supermarket")
         
         try:
             choice = int(input("Choose where do you wish to go: "))
@@ -179,10 +177,6 @@ def mainHub():
                 area3()
             elif(choice == 4):
                 area4()
-            elif(choice == 5):
-                area5()
-            elif(choice == 6):
-                area6()
             else:
                 continue
                 
