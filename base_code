@@ -45,6 +45,10 @@ def putToCart(item):
     
 
 def displayFund(fund):
+    if(fund == 0):
+        print("You have no money.")
+        print("You poor soul.")
+        sys.exit()
     print(fund)
 
 
@@ -52,14 +56,13 @@ def displayTime(ori_time, timer):
     time_dis = ori_time + timer              #minutes
     hours = time_dis // 60
     minutes = time_dis % 60
-
+ 
+    print("The time now is ", hours, ":", str(minutes).zfill(2))
     if(time_dis >= 1200):
         print("The time is up..")
         Ending()
     if(time_dis > 1080 and ori_time < 1200):
         print("Time is running out. Gotta speed up!")
-    
-    print("The time now is ", hours, ":", str(minutes).zfill(2))
     ori_time = time_dis
     
     
@@ -1127,9 +1130,6 @@ def area4():
 
 
 
-  
-
-    
 
 mainHub()
         
